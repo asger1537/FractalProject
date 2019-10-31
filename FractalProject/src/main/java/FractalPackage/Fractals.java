@@ -1,4 +1,4 @@
-package FractalProject;
+package FractalPackage;
 
 import java.util.ArrayList;
 
@@ -12,7 +12,7 @@ public final class Fractals extends PApplet{
     int direction;
 
     public static void main(String[] args) {
-        PApplet.main("FractalProject.Fractals");
+        PApplet.main("FractalPackage.Fractals");
     }
 
     public void settings() {
@@ -21,11 +21,14 @@ public final class Fractals extends PApplet{
     }
 
     public void setup() {
-        circleFractal(width/2, height/2, 400);
+        
+        //println("setup");
+        //circleFractal(width/2, height/2, 400);
         //sierpinski(0, height, width);
-        //ArrayList <PVector> startLines = new ArrayList();
-        //startLines.add(new PVector(10, 0));
-        //fractal(new PVector(width/2, height/2), startLines);
+        ArrayList<PVector> startLines = new ArrayList<PVector>();
+        startLines.add(new PVector(10, 0));
+        startLines.add(new PVector(0, 10));
+        fractal(new PVector(width/2, height/2), startLines);
 
         //connectingLine(new PVector(width/2, height/2), new PVector(100, 200));
     }
@@ -75,23 +78,24 @@ public final class Fractals extends PApplet{
     }
 
     public void fractal(PVector startPosition, ArrayList<PVector> lineVectors){
-        PVector p = lineVectors.get(0).get();
-        connectingLine(startPosition, PVector.add(startPosition, p));
-        for (int i = 1; i < lineVectors.size()-1; i++){
-            p.add(lineVectors.get(i));
-            connectingLine(PVector.add(startPosition, lineVectors.get(i)),
-            PVector.add(startPosition, lineVectors.get(i+1)));
-        }
-        p.add(lineVectors.get(lineVectors.size()-1));
+        PVector p = startPosition.copy();
         
-        ArrayList<PVector> newLines = new ArrayList();
+        for (int i = 0; i < lineVectors.size(); i++){
+            println(lineVectors.get(i), p);
+            connectingLine(p, PVector.add(p, lineVectors.get(i)));
+            p.add(lineVectors.get(i));    
+        }
+        
+        
+        ArrayList<PVector> newLines = new ArrayList<PVector>();
         for (PVector pv : lineVectors){
             pv.rotate(PI/2);
             newLines.add(pv);
         }
         if (newLines.size() < 100){
-            fractal(PVector.add(startPosition, p), newLines);  
+            //fractal(PVector.add(startPosition, p), newLines);  
         }    
+        
     } 
 
     public void minFunction(float x){
