@@ -21,16 +21,9 @@ public final class Fractals extends PApplet{
     }
 
     public void setup() {
+        sierpinski(0, height, 200);
+        circleFractal(width/2, height/2, 100);
         
-        //println("setup");
-        //circleFractal(width/2, height/2, 400);
-        //sierpinski(0, height, width);
-        ArrayList<PVector> startLines = new ArrayList<PVector>();
-        startLines.add(new PVector(10, 0));
-        startLines.add(new PVector(0, 10));
-        fractal(new PVector(width/2, height/2), startLines);
-
-        //connectingLine(new PVector(width/2, height/2), new PVector(100, 200));
     }
     
     public void draw() {
@@ -47,11 +40,11 @@ public final class Fractals extends PApplet{
         fill(0, 255, 0, 128);
         circle(x, y, r*2);
         if (r > 2){
-            //stroke(r/2, r/2, 0f);
+            stroke(r/2, r/2, 0f);
             float newRadius = r/2;
-            //circleFractal(x-newRadius, y, newRadius);
+            circleFractal(x-newRadius, y, newRadius);
             circleFractal(x+newRadius, y, newRadius);
-            circleFractal(x, y-newRadius, newRadius);
+            //circleFractal(x, y-newRadius, newRadius);
             //circleFractal(x, y+newRadius, newRadius);
         }
     }
@@ -68,46 +61,9 @@ public final class Fractals extends PApplet{
             float newSideLength = s/2f;
             sierpinski(x, y, newSideLength);
             sierpinski(x+newSideLength/2, y-newSideLength*H, newSideLength);
-            sierpinski(x+newSideLength, y, newSideLength);
-            //sierpinski(x-newSideLength, y+newSideLength*H, newSideLength);       
+            sierpinski(x+newSideLength, y, newSideLength);    
         }
     }
-
-    public void connectingLine(PVector p1, PVector p2){
-        line(p1.x, p1.y, p2.x, p2.y);
-    }
-
-    public void fractal(PVector startPosition, ArrayList<PVector> lineVectors){
-        PVector p = startPosition.copy();
-        
-        for (int i = 0; i < lineVectors.size(); i++){
-            println(lineVectors.get(i), p);
-            connectingLine(p, PVector.add(p, lineVectors.get(i)));
-            p.add(lineVectors.get(i));    
-        }
-        
-        
-        ArrayList<PVector> newLines = new ArrayList<PVector>();
-        for (PVector pv : lineVectors){
-            pv.rotate(PI/2);
-            newLines.add(pv);
-        }
-        if (newLines.size() < 100){
-            //fractal(PVector.add(startPosition, p), newLines);  
-        }    
-        
-    } 
-
-    public void minFunction(float x){
-        noFill();
-        ellipse(width/2, height/2, x, x);
-        if (x < 400){
-            minFunction(x*1.1f);
-        }
-    }
-
-
-    
 
     
 }
